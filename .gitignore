@@ -1,0 +1,9 @@
+build/
+dist/
+npm-debug.log
+tsconfig.json
+node_modules/
+package-lock.json
+doc/
+mock2easy/
+.vscode/
