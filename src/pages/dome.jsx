@@ -1,8 +1,11 @@
-import React from 'react';
-export default class jspang extends React.Component{
-    render(){
-        return(
-            <div>A默认页面</div>
-        );
-    }
+import React, { useState } from 'react';
+function Example() {
+    const [count, setCount] = useState(0);
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
 }
+export default Example;
