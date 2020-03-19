@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { createHashHistory } from 'history';
-import Bundle from './bundle';
 import { Route, Router, Switch } from 'react-router-dom';
 
+import { Errors } from '@/components';
 const hashHistory = createHashHistory();
 const Demo = lazy(() => import('@/pages/dome'));
 
@@ -13,6 +13,7 @@ export default () => (
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <Route exact path="/demo" component={Demo} />
+        <Route component={Errors} />
       </Switch>
     </Suspense>
   </Router>

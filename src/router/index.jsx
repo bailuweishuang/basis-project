@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 import { createHashHistory } from 'history';
-import Demo from './demo';
 import { Route, Router, Switch } from 'react-router-dom';
+import Demo from './demo';
 
 const hashHistory = createHashHistory();
-
 hashHistory.listen(() => {});
 export default () => (
   <Router history={hashHistory}>
