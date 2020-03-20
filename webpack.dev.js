@@ -18,7 +18,7 @@ module.exports = merge(common, {
     // quiet: true, // necessary for FriendlyErrorsPlugin
     compress: true,
     inline: true,
-    port: 1024,
+    port: 1025,
     host: "127.0.0.1",
     watchOptions: {
       poll: false
