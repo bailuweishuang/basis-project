@@ -5,7 +5,7 @@ function Example() {
   const [count, setCount] = useState(0);
   return (
     <div>
-      <p>You clicked {count} times</p>
+      <p>You clicked {count} times 修改</p>
       <NewInput></NewInput>
       <Button type="primary" onClick={() => setCount(count + 1)}>
         Click me
