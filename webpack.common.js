@@ -5,11 +5,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   //入口文件
-  entry: './src/index.js',
+  entry: {
+    main: './src/index.js',
+    framework: ['react', 'react-dom'],
+  },
   //出口文件
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].[chunkhash:6].js',
     path: path.resolve(__dirname, 'dist'),
+    chunkFilename:"chunk/[name].[chunkhash:6].js",
   },
   // externals: {
   //   react: "React",
@@ -38,14 +42,14 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: 'html-loader',
-          },
-        ],
-      },
+      // {
+      //   test: /\.html$/,
+      //   use: [
+      //     {
+      //       loader: 'html-loader',
+      //     },
+      //   ],
+      // },
       {
         test: /\.s[c|a]ss$/,
         use: ExtractTextPlugin.extract({
@@ -98,6 +102,18 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    splitChunks: {
+        chunks: "all",
+        cacheGroups: {
+            framework: {
+                test: "framework",
+                name: "framework",
+                enforce: true
+            }
+        }
+    }
+},
   plugins: [
     new HtmlWebPackPlugin({
       title: 'Project',
@@ -106,6 +122,8 @@ module.exports = {
       hash: true, //防止缓存
       minify: {
         removeAttributeQuotes: true, //压缩 去掉引号
+        removeComments: true,
+        collapseWhitespace: true,
       },
     }),
     new CleanWebpackPlugin(),
@@ -117,18 +135,10 @@ module.exports = {
       React: 'react',
     }),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
   ],
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    host: '127.0.0.1',
-    hot: true,
-    compress: true,
-    port: 1024,
-  },
 };
