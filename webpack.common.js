@@ -11,9 +11,9 @@ module.exports = {
   },
   //出口文件
   output: {
-    filename: '[name].[chunkhash:6].js',
+    filename: '[name].[hash:6].js',
     path: path.resolve(__dirname, 'dist'),
-    chunkFilename:"chunk/[name].[chunkhash:6].js",
+    chunkFilename: 'chunk/[name].[chunkhash:6].js',
   },
   // externals: {
   //   react: "React",
@@ -42,56 +42,9 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      // {
-      //   test: /\.html$/,
-      //   use: [
-      //     {
-      //       loader: 'html-loader',
-      //     },
-      //   ],
-      // },
-      {
-        test: /\.s[c|a]ss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
-          use: ['css-loader', 'sass-loader'],
-        }),
-      },
-      {
-        test: /(\.css|\.less)$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true, // 指定启用css modules
-              localIdentName: '[name]__[local]--[hash:base64:5]', // 指定css的类名格式
-            },
-          },
-          {
-            loader: 'less-loader',
-          },
-          {
-            loader: 'postcss-loader',
-          },
-        ],
-        exclude: /node_modules/, //那些文件不需要用上述loader
-      },
-      {
-        test: /(\.css|\.less)$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-        ],
-        exclude: /src/, //那些文件不需要用上述loader
-      },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: ['file-loader'],
@@ -104,16 +57,16 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-        chunks: "all",
-        cacheGroups: {
-            framework: {
-                test: "framework",
-                name: "framework",
-                enforce: true
-            }
-        }
-    }
-},
+      chunks: 'all',
+      cacheGroups: {
+        framework: {
+          test: 'framework',
+          name: 'framework',
+          enforce: true,
+        },
+      },
+    },
+  },
   plugins: [
     new HtmlWebPackPlugin({
       title: 'Project',

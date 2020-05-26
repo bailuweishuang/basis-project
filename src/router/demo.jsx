@@ -4,7 +4,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 
 import { Errors } from '@/components';
 const hashHistory = createHashHistory();
-const Demo = lazy(() => import('@/pages/dome'));
+const Demo = lazy(() => import('@/pages/demo'));
 
 hashHistory.listen(() => {});
 
