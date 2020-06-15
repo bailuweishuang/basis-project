@@ -17,15 +17,7 @@ module.exports = {
   },
   // externals: {
   //   react: "React",
-  //   "react-dom": "ReactDOM",
-  //   "react-redux": "ReactRedux",
-  //   "react-router": "ReactRouter",
-  //   "react-router-dom": "ReactRouterDOM",
-  //   redux: "Redux",
   //   antd: "antd",
-  //   'redux-thunk': "ReduxThunk",
-  //   axios: "axios",
-  //   qs: "Qs",
   // },
   resolve: {
     extensions: ['.js', '.css', '.json', '.jsx', '.scss'],
