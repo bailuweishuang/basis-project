@@ -6,11 +6,4 @@ export default {
   path: '/c',
   component: Demo,
   title: 'third',
-  children: [
-    {
-      path: '/children',
-      title: 'thirdChildren',
-      component: Demo,
-    },
-  ],
 };

@@ -5,6 +5,7 @@ const Demo1 = lazy(() => import('@/pages/a'));
 
 export default {
   path: '/a',
+  component: Demo,
   title: 'first',
   children: [
     {
@@ -29,6 +30,19 @@ export default {
       path: '/childrent456',
       title: 'firstChildrent456',
       component: Demo1,
+      children: [
+        {
+          path: '/detail',
+          title: 'asad',
+          component: Demo1,
+          hidden: true,
+        },
+        {
+          path: '/detail1',
+          title: 'asa12d',
+          component: Demo1,
+        },
+      ],
     },
   ],
 };
