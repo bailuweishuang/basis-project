@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Button, Form, Input, Checkbox } from 'antd';
 import { NewInput } from 'component-library-hyx';
 import './style.scss';
-import { format } from 'util';
 
 function Example() {
   const [form] = Form.useForm();

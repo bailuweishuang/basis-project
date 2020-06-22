@@ -8,7 +8,7 @@ const { SubMenu } = Menu;
 function menus() {
   const urlHash = window.location.hash.split('/');
   urlHash.splice(0, 1);
-  let urlHasharr = [];
+  const urlHasharr = [];
   urlHash.reduce((prev, item) => {
     urlHasharr.push(`${prev}/${item}`);
     return `${prev}/${item}`;

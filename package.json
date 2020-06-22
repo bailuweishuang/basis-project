@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "antd": "^4.0.3",
+    "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
     "bundle-loader": "^0.5.6",
     "component-library-hyx": "^1.0.11",
