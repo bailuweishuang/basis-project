@@ -48,6 +48,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
     "antd": "^4.0.3",
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",

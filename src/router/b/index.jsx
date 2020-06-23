@@ -1,7 +1,5 @@
-import { lazy } from 'react';
-
-const Demo = lazy(() => import('@/pages/a'));
-
+import Lazy from '../lazy.jsx';
+const Demo = (props) => <Lazy {...props} load={import('@/pages/a')} />;
 export default {
   path: '/b',
   title: 'second',

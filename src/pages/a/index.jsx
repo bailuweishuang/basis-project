@@ -6,6 +6,7 @@ class Page extends React.Component {
     this.state = {};
   }
   render() {
+    console.log(this.props)
     const { history } = this.props;
     return (
       <div>
