@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Util from './util';
+
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 class Api {
@@ -49,6 +51,7 @@ class Api {
     const newConfig = {
       ...this.config,
       ...config,
+      cancelToken: source.token,
       headers: {
         ...this.config.headers,
         ...config.headers,

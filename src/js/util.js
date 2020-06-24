@@ -268,5 +268,11 @@ const Util = {
       thousands,
     });
   },
+  isFunction(obj) {
+    return obj && typeof obj === 'function';
+  },
+  isString(obj) {
+    return typeof obj === 'string';
+  },
 };
 export default Util;
