@@ -1,12 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { Button, Form, Input, Checkbox } from 'antd';
 import { NewInput } from 'component-library-hyx';
+import { nameContext } from '@/js/context-manager';
+import Name from '../a';
 import './style.scss';
-
+const addNumber = (state, action) => {
+  switch (action.type) {
+    case 'add':
+      return state + 1;
+    default:
+      return state;
+  }
+};
 function Example() {
   const [form] = Form.useForm();
   const [count, setCount] = useState(0);
   const [color, setColor] = useState(true);
+  const [number, dispatch] = useReducer(addNumber, 1);
   useEffect(() => {
     // window.addEventListener('scroll', () => {
     //   console.log(document.documentElement.scrollTop || document.body.scrollTop);
@@ -156,9 +166,15 @@ function Example() {
     },
   };
   const c = validator.create({ name: 1, age: 4, ie: 3 });
+
   return (
     <div>
-      <p>You clicked {count} times 11</p>
+      <div>{number}</div>
+      <Button onClick={() => dispatch({ type: 'add' })}>useReducer</Button>
+      <nameContext.Provider value={{ count, setCount }}>
+        <Name />
+      </nameContext.Provider>
+      <p>You clicked {count} times 111</p>
       <NewInput></NewInput>
       <Form
         {...layout}

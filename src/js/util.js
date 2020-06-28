@@ -274,5 +274,8 @@ const Util = {
   isString(obj) {
     return typeof obj === 'string';
   },
+  isObject(obj) {
+    return typeof obj === 'object';
+  },
 };
 export default Util;
