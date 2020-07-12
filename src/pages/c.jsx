@@ -101,7 +101,7 @@ G6.registerNode(
             y: rectConfig.height / 2,
             r: 8,
             stroke: lightColor,
-            fill: collapsed ? lightColor : '#fff',
+            fill: lightColor,
             isCollapseShape: true,
           },
         });
@@ -110,14 +110,14 @@ G6.registerNode(
         group.addShape('text', {
           attrs: {
             x: rectConfig.width,
-            y: rectConfig.height / 2,
+            y: rectConfig.height / 2+2,
             width: 16,
             height: 16,
             textAlign: 'center',
             textBaseline: 'middle',
-            text: collapsed ? '+' : '-',
+            text: cfg.children.length,
             fontSize: 16,
-            fill: collapsed ? '#fff' : lightColor,
+            fill: '#fff',
             cursor: 'pointer',
             isCollapseShape: true,
           },
@@ -169,6 +169,8 @@ class PersonInfo extends React.Component {
     });
     return data;
   };
+
+
 
   getEchart = () => {
     const width = document.getElementById('container').scrollWidth;
@@ -245,12 +247,18 @@ class PersonInfo extends React.Component {
         this.transformData([data]);
         graph.data(data);
         graph.render();
-        graph.translate(300, offsetHeight*0.5);
+        graph.translate(300, offsetHeight * 0.5);
         graph.setMaxZoom(5);
       });
   };
   render() {
-    return <div className="transfer-detail" id="container" style={{width: 1000, height: '100%'}}/>;
+    return (
+      <div
+        className="transfer-detail"
+        id="container"
+        style={{ width: 1000, height: '100%' }}
+      />
+    );
   }
 }
 export default PersonInfo;
