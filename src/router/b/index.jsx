@@ -1,5 +1,5 @@
 import Lazy from '../lazy.jsx';
-const Demo = (props) => <Lazy {...props} load={import('@/pages/a')} />;
+const Demo = (props) => <Lazy {...props} load={import('@/pages/d')} />;
 export default {
   path: '/b',
   title: 'second',

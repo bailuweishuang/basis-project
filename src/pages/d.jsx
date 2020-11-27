@@ -1,3 +1,6 @@
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { Button } from 'antd';
 import G6 from '@antv/g6';
 
 G6.registerNode(
@@ -101,7 +104,7 @@ G6.registerNode(
             y: rectConfig.height / 2,
             r: 8,
             stroke: lightColor,
-            fill: lightColor,
+            fill: collapsed ? lightColor : '#fff',
             isCollapseShape: true,
           },
         });
@@ -110,14 +113,14 @@ G6.registerNode(
         group.addShape('text', {
           attrs: {
             x: rectConfig.width,
-            y: rectConfig.height / 2+2,
+            y: rectConfig.height / 2,
             width: 16,
             height: 16,
             textAlign: 'center',
             textBaseline: 'middle',
-            text: cfg.children.length,
+            text: collapsed ? '+' : '-',
             fontSize: 16,
-            fill: '#fff',
+            fill: collapsed ? '#fff' : lightColor,
             cursor: 'pointer',
             isCollapseShape: true,
           },
@@ -130,25 +133,10 @@ G6.registerNode(
   'single-node'
 );
 
-class PersonInfo extends React.Component {
-  static defaultProps = {};
+const TreeGraphReact = () => {
+  const transformData = (data, parentIndex) => {
+    console.log(1231);
 
-  static propTypes = {};
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    this.getEchart();
-   
-  }
-
-  componentDidUpdate() {}
-
-  componentWillUnmount() {}
-  transformData = (data, parentIndex) => {
     if (!data || !data.length) {
       return;
     }
@@ -165,17 +153,13 @@ class PersonInfo extends React.Component {
       };
       data[index] = item;
       if (item.children && item.children.length) {
-        this.transformData(item.children, recordIndex);
+        transformData(item.children, recordIndex);
       }
     });
     return data;
   };
-
-
-
-  getEchart = () => {
+  useEffect(() => {
     const width = document.getElementById('container').scrollWidth;
-    const offsetHeight = document.getElementById('container').offsetHeight;
     const height = document.getElementById('container').scrollHeight || 600;
     const graph = new G6.TreeGraph({
       container: 'container',
@@ -209,6 +193,7 @@ class PersonInfo extends React.Component {
           [1, 0.5],
         ],
       },
+      defaultLevel: 2,
       defaultEdge: {
         type: 'cubic-horizontal',
         style: {
@@ -245,21 +230,15 @@ class PersonInfo extends React.Component {
           item.label = '12313';
           item.rate = 0.1;
         });
-        this.transformData([data]);
+        console.log(transformData([data]));
         graph.data(data);
         graph.render();
-        graph.translate(300, offsetHeight * 0.5);
+        graph.fitView();
         graph.setMaxZoom(5);
       });
-  };
-  render() {
-    return (
-      <div
-        className="transfer-detail"
-        id="container"
-        style={{ width: 1000, height: '100%' }}
-      />
-    );
-  }
-}
-export default PersonInfo;
+  }, []);
+
+  return <div id="container"></div>;
+};
+
+export default TreeGraphReact;
