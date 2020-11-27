@@ -9,12 +9,6 @@ module.exports = {
     main: './src/index.js',
     framework: ['react', 'react-dom'],
   },
-  //出口文件
-  output: {
-    filename: '[name].[hash:6].js',
-    path: path.resolve(__dirname, 'dist'),
-    chunkFilename: 'chunk/[name].[chunkhash:6].js',
-  },
   // externals: {
   //   react: "React",
   //   antd: "antd",
@@ -34,20 +28,11 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
-      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader'] },
+      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-          'postcss-loader',
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader'],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,

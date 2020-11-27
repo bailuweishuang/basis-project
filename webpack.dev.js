@@ -2,38 +2,37 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
 const webpack = require('webpack');
-// const testProxy = [
-//   {
-//     context: ['/metadata', '/obs', '/common', '/party'],
-//     target: 'http://192.168.34.142:8080',
-//     // target: 'http://192.168.33.141:8080',
-//     https: true,
-//     headers: {
-//       Host: 'ydbtest.shuyixin.cn',
-//     },
-//   },
-//   {
-//     context: '/files',
-//     target: 'http://192.168.34.239:8079',
-//     https: true,
-//     headers: {
-//       Host: 'ydbtest.shuyixin.cn',
-//     },
-//   },
-//   {
-//     context: '/',
-//     target: 'http://192.168.34.142:8191',
-//     // target: 'http://192.168.33.161:8191',
-//     // target: 'http://192.168.33.157:8191',
-//     // target: 'http://192.168.33.162:8191',
-//     https: true,
-//     headers: {
-//       Host: 'ydbtest.shuyixin.cn',
-//     },
-//   },
-// ];
+const testProxy = [
+  {
+    context: ['/metadata', '/obs', '/common', '/party'],
+    target: 'https://xietongfat.zhonglr.com',
+    // target: "http://192.168.33.164:8080",
+    https: true,
+    headers: {
+      Host: 'xietongfat.zhonglr.com',
+    },
+  },
+  {
+    context: '/',
+    target: 'https://xietongfat.zhonglr.com',
+    // target: "http://192.168.33.164:8080",s
+    https: true,
+    headers: {
+      Host: 'xietongfat.zhonglr.com',
+    },
+  },
+];
 module.exports = merge(common, {
   devtool: 'eval-source-map ',
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|jpeg|gif)$/,
+        use: 'file-loader',
+      },
+    ],
+  },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -54,6 +53,6 @@ module.exports = merge(common, {
     watchOptions: {
       poll: false,
     },
-    // proxy: testProxy,
+    proxy: testProxy,
   },
 });

@@ -12,6 +12,7 @@ class PersonInfo extends React.Component {
 
   componentDidMount() {
     this.getEchart();
+   
   }
 
   componentDidUpdate() {}

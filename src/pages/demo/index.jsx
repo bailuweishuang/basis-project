@@ -28,7 +28,7 @@ function Example() {
         setColor(true);
       }
     };
-  });
+  }, []);
   const a = () => {
     new Promise((resolve, reject) => {});
   };
