@@ -8,6 +8,7 @@ const { SubMenu } = Menu;
 function menus() {
   const urlHash = window.location.hash.split('/');
   urlHash.splice(0, 1);
+  console.log(urlHash.splice(0, 1));
   const urlHasharr = [];
   urlHash.reduce((prev, item) => {
     urlHasharr.push(`${prev}/${item}`);
@@ -102,7 +103,7 @@ function menus() {
   };
   useEffect(() => {
     setCurrent(urlHasharr);
-  }, urlHash);
+  }, []);
   return (
     <div>
       <Menu

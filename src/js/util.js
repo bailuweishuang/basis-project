@@ -277,5 +277,8 @@ const Util = {
   isObject(obj) {
     return typeof obj === 'object';
   },
+  a() {
+    return new Promise();
+  },
 };
 export default Util;

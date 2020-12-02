@@ -1,10 +1,18 @@
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const common = require('./webpack.common.js');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
 module.exports = merge(common, {
+  // 会自动压缩代码
   mode: 'production',
-  devtool: 'source-map',
+  // devtool: 'source-map',
   //出口文件
   output: {
     filename: '[name].[hash:6].js',
@@ -13,6 +21,34 @@ module.exports = merge(common, {
   },
   module: {
     rules: [
+      // 抽离 css
+      {
+        test: /\.css$/,
+        loader: [
+          MiniCssExtractPlugin.loader, // 注意，这里不再用 style-loader
+          'css-loader',
+          'postcss-loader',
+        ],
+      },
+      // 抽离 less --> css
+      {
+        test: /\.less$/,
+        loader: [
+          MiniCssExtractPlugin.loader, // 注意，这里不再用 style-loader
+          'css-loader',
+          'less-loader',
+          'postcss-loader',
+        ],
+      },
+      {
+        test: /\.scss$/,
+        loader: [
+          MiniCssExtractPlugin.loader, // 注意，这里不再用 style-loader
+          'css-loader',
+          'less-loader',
+          'postcss-loader',
+        ],
+      },
       // 图片 - 考虑 base64 编码的情况
       {
         test: /\.(png|jpg|jpeg|gif)$/,
@@ -37,5 +73,67 @@ module.exports = merge(common, {
     new UglifyJSPlugin({
       sourceMap: true,
     }),
+    new webpack.DefinePlugin({
+      // window.ENV = 'production'
+      ENV: JSON.stringify('production'),
+    }),
+    // 抽离 css 文件
+    new MiniCssExtractPlugin({
+      filename: 'css/main.[contentHash:8].css',
+    }),
+    new CleanWebpackPlugin(),
+    // 使用 ParallelUglifyPlugin 并行压缩输出的 JS 代码
+    new ParallelUglifyPlugin({
+      // 传递给 UglifyJS 的参数
+      // （还是使用 UglifyJS 压缩，只不过帮助开启了多进程）
+      uglifyJS: {
+        output: {
+          beautify: false, // 最紧凑的输出
+          comments: false, // 删除所有的注释
+        },
+        compress: {
+          // 删除所有的 `console` 语句，可以兼容ie浏览器
+          drop_console: true,
+          // 内嵌定义了但是只用到一次的变量
+          collapse_vars: true,
+          // 提取出出现多次但是没有定义成变量去引用的静态值
+          reduce_vars: true,
+        },
+      },
+    }),
   ],
+
+  optimization: {
+    // 压缩 css
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
+    // 分割代码块
+    splitChunks: {
+      chunks: 'all',
+      /**
+             * initial 入口 chunk，对于异步导入的文件不处理
+                async 异步 chunk，只对异步导入的文件处理
+                all 全部 chunk
+             */
+
+      // 缓存分组
+      cacheGroups: {
+        // 第三方模块
+        vendor: {
+          name: 'vendor', // chunk 名称
+          priority: 1, // 权限更高，优先抽离，重要！！！
+          test: /node_modules/,
+          minSize: 0, // 大小限制
+          minChunks: 1, // 最少复用过几次
+        },
+
+        // 公共的模块
+        common: {
+          name: 'common', // chunk 名称
+          priority: 0, // 优先级
+          minSize: 3, // 公共模块的大小限制
+          minChunks: 2, // 公共模块最少复用过几次
+        },
+      },
+    },
+  },
 });

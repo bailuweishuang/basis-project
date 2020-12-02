@@ -2,6 +2,9 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
 const webpack = require('webpack');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+
 const testProxy = [
   {
     context: ['/metadata', '/obs', '/common', '/party'],
@@ -28,12 +31,35 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        loader: ['babel-loader'],
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/, // 第二，不要再转换 node_modules 的代码
+      },
+      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
         test: /\.(png|jpg|jpeg|gif)$/,
         use: 'file-loader',
       },
     ],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      // window.ENV = 'development'
+      ENV: JSON.stringify('development'),
+    }),
+    // 第三，告诉 Webpack 使用了哪些动态链接库
+    new DllReferencePlugin({
+      // 描述 react 动态链接库的文件内容
+      manifest: require(path.join(path.join(__dirname, 'dist'), 'react.manifest.json')),
+    }),
+  ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     clientLogLevel: 'warning',
@@ -53,6 +79,6 @@ module.exports = merge(common, {
     watchOptions: {
       poll: false,
     },
-    proxy: testProxy,
+    // proxy: testProxy,
   },
 });
