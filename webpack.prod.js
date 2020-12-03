@@ -8,6 +8,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+const HappyPack = require('happypack');
 
 module.exports = merge(common, {
   // 会自动压缩代码
@@ -21,6 +22,11 @@ module.exports = merge(common, {
   },
   module: {
     rules: [
+      {
+        test: /\.js[x]?$/,
+        exclude: /node_modules/,
+        use: ['happypack/loader?id=babel'],
+      },
       // 抽离 css
       {
         test: /\.css$/,
@@ -69,6 +75,17 @@ module.exports = merge(common, {
       },
     ],
   },
+  performance: {
+    hints: 'warning', // 枚举
+    // 此选项根据单个资源体积，控制 webpack 何时生成性能提示
+    maxAssetSize: 30000000, // 整数类型（以字节为单位）
+    // 对指定的入口，对于所有资源，
+    maxEntrypointSize: 50000000, // 整数类型（以字节为单位）
+    assetFilter: function(assetFilename) {
+      // 提供资源文件名的断言函数
+      return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    },
+  },
   plugins: [
     new UglifyJSPlugin({
       sourceMap: true,
@@ -80,6 +97,13 @@ module.exports = merge(common, {
     // 抽离 css 文件
     new MiniCssExtractPlugin({
       filename: 'css/main.[contentHash:8].css',
+    }),
+    // happyPack 开启多进程打包
+    new HappyPack({
+      // 用唯一的标识符 id 来代表当前的 HappyPack 是用来处理一类特定的文件
+      id: 'babel',
+      // 如何处理 .js 文件，用法和 Loader 配置中一样
+      loaders: ['babel-loader?cacheDirectory'],
     }),
     new CleanWebpackPlugin(),
     // 使用 ParallelUglifyPlugin 并行压缩输出的 JS 代码
