@@ -4,6 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 const testProxy = [
   {
@@ -36,8 +37,28 @@ module.exports = merge(common, {
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/, // 第二，不要再转换 node_modules 的代码
       },
-      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
-      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.less$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          // {
+          //   loader: 'css-loader',
+          //   options: {
+          //     modules: {
+          //       // 自定义 hash 名称
+          //       localIdentName: '[path][name]__[local]--[hash:base64:5]',
+          //     },
+          //   },
+          // },
+          'less-loader',
+        ],
+      },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -57,7 +78,10 @@ module.exports = merge(common, {
     // 第三，告诉 Webpack 使用了哪些动态链接库
     new DllReferencePlugin({
       // 描述 react 动态链接库的文件内容
-      manifest: require(path.join(path.join(__dirname, 'dist'), 'react.manifest.json')),
+      manifest: require(path.join(path.join(__dirname, 'src/static'), 'react.manifest.json')),
+    }),
+    new AddAssetHtmlPlugin({
+      filepath: path.join(path.join(__dirname, 'src/static'), 'react.dll.js'),
     }),
   ],
   devServer: {
@@ -79,6 +103,6 @@ module.exports = merge(common, {
     watchOptions: {
       poll: false,
     },
-    // proxy: testProxy,
+    proxy: testProxy,
   },
 });

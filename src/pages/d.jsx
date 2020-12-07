@@ -1,3 +1,5 @@
+import styles from './style1.less';
+
 // import React, { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 // import { Button } from 'antd';
@@ -244,5 +246,5 @@
 // export default TreeGraphReact;
 
 export default () => {
-  return '123';
+  return <div className={styles.a}>'123'</div>;
 };

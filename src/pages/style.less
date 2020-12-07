@@ -1,0 +1,15 @@
+// 变量
+@width: 20px;
+@margin10: 10px;
+// 混合（Mixins）
+.border {
+  border: 1px solid #333;
+}
+.a {
+  background: red;
+  .b {
+    background: green;
+    margin: @margin10;
+    .border();
+  }
+}
