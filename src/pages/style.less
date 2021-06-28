@@ -13,3 +13,65 @@
     .border();
   }
 }
+// 继承 和 单位
+.parent {
+  font-size: 16px;
+  color: #333;
+  .son-one {
+    border: 1px solid #333;
+  }
+  .son-two {
+    font-size: 20px;
+    height: 2em;
+  }
+  .son-three {
+    height: 3rem;
+  }
+  .son-four {
+    background-color: aqua;
+    height: 20vh;
+    width: 20vw;
+  }
+}
+
+// css 层叠上下文
+.box {
+  img {
+    width: 200px;
+    height: 200px;
+  }
+
+  // 相同层叠 谁大谁上
+  .first {
+    position: relative;
+    img {
+      z-index: 2;
+      position: absolute;
+      top: 50px;
+    }
+  }
+  .second {
+    position: relative;
+    img {
+      z-index: 1;
+    }
+  }
+
+  // 不相同层叠 向上寻找相同层叠 z-index相同 后来者上
+  // .first {
+  //   position: relative;
+  //   z-index: 0;
+  //   img {
+  //     z-index: 2;
+  //     position: absolute;
+  //     top: 50px;
+  //   }
+  // }
+  // .second {
+  //   position: relative;
+  //   z-index: 0;
+  //   img {
+  //     z-index: 1;
+  //   }
+  // }
+}
