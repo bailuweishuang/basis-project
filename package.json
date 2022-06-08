@@ -77,10 +77,15 @@
     "gulp-load-plugins": "^2.0.6",
     "gulp-sass": "^4.1.0",
     "npm-react-dom": "^1.0.8",
+    "pako": "^2.0.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-redux": "^7.2.4",
     "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.1.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "browserslist": [
     "defaults",

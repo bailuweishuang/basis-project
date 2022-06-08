@@ -30,7 +30,7 @@ function Example() {
     };
   });
   const a = () => {
-    new Promise((resolve, reject) => {});
+    new Promise((resolve, reject) => { });
   };
 
   const promise = (executor) => {
@@ -74,25 +74,25 @@ function Example() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  promise.prototype.then = function(onresolve, onreject) {
+  promise.prototype.then = function (onresolve, onreject) {
     const self = this;
     let promise2;
     // 标准 不是方法 要忽略
     onresolve =
       typeof onresolve === 'function'
         ? onresolve
-        : function(c) {
-            return c;
-          };
+        : function (c) {
+          return c;
+        };
     onreject =
       typeof onreject === 'function'
         ? onreject
-        : function(j) {
-            return j;
-          };
+        : function (j) {
+          return j;
+        };
     if (self.status === 'pending') {
-      return (promise2 = new promise(function(resolve, reject) {
-        self.resolveCallback.push(function(resolve, reject) {
+      return (promise2 = new promise(function (resolve, reject) {
+        self.resolveCallback.push(function (resolve, reject) {
           try {
             const x = onresolve(slef.data);
             if (x instanceof promise) {
@@ -102,7 +102,7 @@ function Example() {
             reject(e);
           }
         });
-        self.rejectCallback.push(function(resolve, reject) {
+        self.rejectCallback.push(function (resolve, reject) {
           try {
             const x = onreject(slef.data);
             if (x instanceof promise) {
@@ -115,7 +115,7 @@ function Example() {
       }));
     }
     if (self.status === 'resolve') {
-      return (promise2 = new promise(function(resolve, reject) {
+      return (promise2 = new promise(function (resolve, reject) {
         try {
           const x = onresolve(self.data);
           if (x instanceof promise) {
@@ -129,7 +129,7 @@ function Example() {
       }));
     }
     if (self.status === 'reject') {
-      return (promise2 = new promise(function(resolve, reject) {
+      return (promise2 = new promise(function (resolve, reject) {
         try {
           const x = onreject(self.data);
           if (x instanceof promise) {
@@ -234,3 +234,19 @@ function Example() {
   );
 }
 export default Example;
+
+// export default function StateExample(props) {
+//   const [number, setNumber] = useState(0);
+//   const [count, setCount] = useState(() => {
+//     const { first, second } = props;
+//     return first + second
+//   })
+//   return <div>
+//     <p>{number}</p>
+//     <p>{count}</p>
+//     <Button onClick={() => {
+//       let _r = number + 1
+//       setNumber(_r)
+//     }}>确定</Button>
+//   </div>
+// }

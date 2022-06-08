@@ -1,4 +1,4 @@
-import styles from './style1.less';
+import styles from "./style1.less";
 
 // import React, { useEffect } from 'react';
 // import ReactDOM from 'react-dom';
@@ -245,6 +245,129 @@ import styles from './style1.less';
 
 // export default TreeGraphReact;
 
-export default () => {
-  return <div className={styles.a}>'123'</div>;
-};
+// export default () => {
+//   return <div className={styles.a}>'123'</div>;
+// };
+import React from "react";
+
+export default class WaterScaner extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  // redraw = (options) => {
+  //     const txtW = options.width || 0;
+  //     const txtH = options.height|| 0;
+  //     let canvas = document.createElement('canvas');
+  //
+  //     canvas.setAttribute('width', txtW+"px");
+  //     canvas.setAttribute('height', txtW+"px");
+  //     let ctx = canvas.getContext("2d");
+  //
+  //     ctx.textAlign = 'center';
+  //     ctx.textBaseline = 'middle';
+  //     ctx.font ='20px microsoft yahei';
+  //
+  //     ctx.fillText('xxx',x,y)
+  //
+  //     ctx.rotate(-(options.roate||0) * Math.PI / 180);
+  //     ctx.fillText(options.txt,0,5);
+  //     let imageUrl = canvas.toDataURL();
+  // }
+  componentDidMount() {
+    var watermark = {};
+
+    function setWatermark(args) {
+      console.log(...arguments);
+      //声明一个怪异一点的变量，确保id的唯一性
+      var id = "111.222.333.456";
+      var xIndex = 250 / 2; //绘制文本的 x 坐标位置
+      var yIndex = 150 / 2; //绘制文本的 y 坐标位置
+      var xInterval = 25; //有多个参数时的行间间隔
+      if (document.getElementById(id) !== null) {
+        document.body.removeChild(document.getElementById(id));
+      }
+      //利用canvas绘制水印信息
+      var can = document.createElement("canvas");
+      can.width = 250;
+      can.height = 150;
+      var cans = can.getContext("2d");
+
+      cans.font = "17px Vedana";
+      // ziti yanse
+      cans.fillStyle = "rgba(200, 200, 200, 0.30)";
+      cans.textAlign = "left";
+      cans.textBaseline = "Middle";
+      cans.translate(xIndex, yIndex);
+      cans.rotate((270 * Math.PI) / 180);
+      cans.translate(-xIndex, -yIndex);
+      for (let i = 0; i < args.length; i++) {
+        const textWidth = cans.measureText(args[i]).width;
+        console.log(textWidth);
+        cans.fillText(
+          args[i],
+          xIndex - textWidth / 2,
+          yIndex - Math.floor(args.length / 2) * 17
+        ); //绘制水印文案
+        yIndex += xInterval; //设置每行间隔
+      }
+      // cans.translate(250 / 2, 150 / 2);
+      //创建div用于显示
+      var div = document.createElement("div");
+      div.id = id;
+      div.style.pointerEvents = "none";
+      div.style.top = "70px";
+      div.style.left = "90px";
+      div.style.position = "fixed";
+      div.style.zIndex = "100000";
+      div.style.width = document.documentElement.clientWidth - 50 + "px";
+      div.style.height = document.documentElement.clientHeight - 50 + "px";
+      //div承载水印显示
+      div.style.background =
+        "url(" + can.toDataURL("image/png") + ") left top repeat";
+      document.body.appendChild(div);
+      return id;
+    }
+
+    function createObserver(id, args) {
+      // 创建一个观察器实例并传入回调函数
+      var observer = new MutationObserver(() => {
+        if (document.getElementById(id) === null) {
+          id = setWatermark(args);
+        }
+      });
+
+      var option = {
+        childList: true, //子元素的变动
+        subtree: true, //所有下属节点（包括子节点和子节点的子节点）的变动
+      };
+
+      observer.observe(document.body, option); //观察body下节点的变化
+    }
+
+    watermark.set = function () {
+      let args = Array.prototype.slice.apply(arguments);
+      let id = setWatermark(args);
+
+      // 创建观察器检测如果水印被去掉了，自动给加上
+      createObserver(id, args);
+
+      //在窗口大小改变之后,自动触发加水印事件
+      window.onresize = function () {
+        setWatermark(args);
+      };
+    };
+    window.watermark = watermark;
+    watermark.set("水印信息1", "我是水印信息2", "我是水印信息3");
+  }
+  render() {
+    return (
+      <div className="imp-gds-self-comp warterScan basic-control">
+        <div style={{ width: "100%", height: "100%" }}>
+          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        </div>
+      </div>
+    );
+  }
+}

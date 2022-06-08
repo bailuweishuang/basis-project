@@ -47,6 +47,7 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       React: 'react',
+      ReactDOM: 'react-dom',
     }),
     // new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
